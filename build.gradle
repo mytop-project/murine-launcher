@@ -62,7 +62,6 @@ android {
 
     defaultConfig {
         minSdk 26
-        targetSdk 36
         vectorDrawables.useSupportLibrary = true
         // Library modules don't auto-generate BuildConfig.APPLICATION_ID
         // the way an application module does (that's an app-only concept —
