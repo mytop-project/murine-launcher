@@ -24,7 +24,6 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    id("org.jetbrains.kotlin.kapt")
     alias(libs.plugins.rikka.refine)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.protobuf)
@@ -116,11 +115,6 @@ android {
     kotlinOptions {
         jvmTarget = '17'
     }
-}
-
-kapt {
-    useBuildCache = true
-    correctErrorTypes = true
 }
 
 // Prepend a framework stub jar to the compile classpath — a plain
@@ -225,7 +219,8 @@ dependencies {
 
     api libs.lottie
     implementation libs.dagger
-    kapt libs.dagger.compiler
+    // Dagger supports KSP directly. Do not start kapt or its stub compilation for the same graph.
+    ksp libs.dagger.compiler
 
     testImplementation libs.junit
     androidTestImplementation libs.mockito.core

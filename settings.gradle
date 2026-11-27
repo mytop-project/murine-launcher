@@ -2,12 +2,6 @@
 // libraries it carries, and murine-app, which packages it as an app. When droidtop builds the launcher as its
 // shell-default submodule, droidtop's settings include these same modules and this file is not read.
 pluginManagement {
-    // kapt is applied by id alone in build.gradle (droidtop's root build puts the Kotlin plugin on the classpath);
-    // here it takes the catalog's Kotlin version.
-    def kotlinVersion = (new File(settingsDir, 'gradle/libs.versions.toml').text =~ /(?m)^kotlin\s*=\s*"([^"]+)"/)[0][1]
-    plugins {
-        id 'org.jetbrains.kotlin.kapt' version kotlinVersion
-    }
     repositories {
         google()
         mavenCentral()
