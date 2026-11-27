@@ -2,12 +2,17 @@
 // libraries it carries, and murine-app, which packages it as an app. When droidtop builds the launcher as its
 // shell-default submodule, droidtop's settings include these same modules and this file is not read.
 pluginManagement {
+    // Only the standalone build supplies an external Kotlin version. Embedded AGP 9 already has KGP on its classpath.
+    def kotlinVersion = (new File(settingsDir, 'gradle/libs.versions.toml').text =~ /(?m)^kotlin\s*=\s*"([^"]+)"/)[0][1]
+    plugins {
+        id 'org.jetbrains.kotlin.android' version kotlinVersion
+    }
     // Request the KGP module directly: the external-plugin compatibility path
     // must not depend on availability of a separate Kotlin Android marker.
     resolutionStrategy {
         eachPlugin {
             if (requested.id.id == 'org.jetbrains.kotlin.android') {
-                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version ?: kotlinVersion}")
             }
         }
     }

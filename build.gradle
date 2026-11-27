@@ -22,7 +22,7 @@
 // build verification status).
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android) apply false
+    id 'org.jetbrains.kotlin.android' apply false
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.rikka.refine)
     alias(libs.plugins.google.ksp)
