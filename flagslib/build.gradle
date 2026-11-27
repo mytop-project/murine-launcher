@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
 }
+
+apply from: new File(rootProject.findProject(':shell-default')?.projectDir ?: rootProject.projectDir, 'gradle/kotlin-android.gradle')
 
 android {
     namespace "com.android.launcher3.flags"
@@ -16,6 +17,7 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src']
+            kotlin.directories.addAll(['src'])
         }
     }
     compileOptions {

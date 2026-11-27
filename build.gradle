@@ -22,12 +22,14 @@
 // build verification status).
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.rikka.refine)
     alias(libs.plugins.google.ksp)
     alias(libs.plugins.google.protobuf)
 }
+
+apply from: new File(rootProject.findProject(':shell-default')?.projectDir ?: rootProject.projectDir, 'gradle/kotlin-android.gradle')
 
 // Old prebuilt framework/SystemUI jars this fork needs at compile time
 // (SystemUI-core, plugin core, animation lib, msdl, aconfig flags, ...) —
@@ -98,6 +100,7 @@ android {
             // file's own header comment for why.
             res.srcDirs = ['res']
             java.srcDirs = ['src', 'src_plugins', 'src_no_quickstep', 'src_shortcuts_overrides']
+            kotlin.directories.addAll(['src', 'src_plugins', 'src_no_quickstep', 'src_shortcuts_overrides'])
             proto {
                 srcDirs = ['protos/', 'protos_overrides/']
             }
@@ -105,15 +108,13 @@ android {
         // The launcher's own JVM unit tests (Droidtop/tracker#921): outside src/, which is all main source here.
         test {
             java.srcDirs = ['unit_tests']
+            kotlin.directories.addAll(['unit_tests'])
         }
     }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
-    }
-    kotlinOptions {
-        jvmTarget = '17'
     }
 }
 
@@ -284,5 +285,12 @@ protobuf {
                 }
             }
         }
+    }
+}
+
+// Works with both the external Kotlin plugin and AGP 9 built-in Kotlin.
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }

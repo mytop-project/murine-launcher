@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
 }
+
+apply from: new File(rootProject.findProject(':shell-default')?.projectDir ?: rootProject.projectDir, 'gradle/kotlin-android.gradle')
 
 android {
     namespace = "com.android.settingslib.widget.preference.segmentedbutton"
@@ -14,6 +15,7 @@ android {
     sourceSets {
         getByName("main") {
             java.srcDirs("src")
+            kotlin.directories.add("src")
             res.srcDirs("res")
         }
     }
@@ -23,9 +25,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = "21"
-    }
 }
 
 dependencies {
@@ -46,4 +45,11 @@ dependencies {
     implementation libs.androidx.core.ktx
     implementation libs.annotation
     implementation libs.kotlinx.coroutines
+}
+
+// Works with both the external Kotlin plugin and AGP 9 built-in Kotlin.
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+    }
 }

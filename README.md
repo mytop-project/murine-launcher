@@ -14,8 +14,10 @@ It offers minimalistic but modern and clean custom looks and feel, and essential
 
 The `droidtop` branch is also built as Droidtop's `shell-default` submodule.
 Dagger's component graph is generated through the existing KSP plugin, rather
-than kapt (owner handoff, 2026-11-27). Room and Dagger share that KSP build path;
-the standalone and embedded builds consume their own pinned version catalogs.
+than kapt (owner handoff, 2026-11-27). The standalone and embedded builds consume their own pinned version catalogs.
+AGP 9 uses its built-in Kotlin support; the pinned standalone AGP 8 build
+uses the external Kotlin plugin. Custom source roots and compiler options
+are declared through the DSL supported by both builds.
 
 Murine Launcher currently supports Androd 8 and above
 

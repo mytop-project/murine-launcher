@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.library'
-    id 'kotlin-android'
 }
+
+apply from: new File(rootProject.findProject(':shell-default')?.projectDir ?: rootProject.projectDir, 'gradle/kotlin-android.gradle')
 
 android {
     namespace "com.android.launcher3.icons"
@@ -16,12 +17,9 @@ android {
     sourceSets {
         main {
             java.srcDirs = ['src', 'src_full_lib']
-            kotlin.directories.add('src')
+            kotlin.directories.addAll(['src', 'src_full_lib'])
             res.srcDirs = ['res']
         }
-    }
-    kotlin {
-        jvmToolchain(21)
     }
 }
 
@@ -58,3 +56,5 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { 
         task.libraries.from(files(_frameworkStubs.resolve()))
     }
 }
+
+kotlin { jvmToolchain(21) }

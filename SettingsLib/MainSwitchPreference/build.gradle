@@ -1,7 +1,8 @@
 plugins {
     id 'com.android.library'
-    id 'org.jetbrains.kotlin.android'
 }
+
+apply from: new File(rootProject.findProject(':shell-default')?.projectDir ?: rootProject.projectDir, 'gradle/kotlin-android.gradle')
 
 android {
     namespace = "com.android.settingslib.widget.mainswitch"
@@ -14,6 +15,7 @@ android {
     sourceSets {
         getByName("main") {
             java.srcDirs("src")
+            kotlin.directories.add("src")
             res.srcDirs("res")
         }
     }
@@ -23,9 +25,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    kotlinOptions {
-        jvmTarget = "21"
-    }
 }
 
 dependencies {
@@ -59,5 +58,12 @@ tasks.withType(JavaCompile).configureEach { task ->
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach { task ->
     task.doFirst {
         task.libraries.from(files(_frameworkStubs.resolve()))
+    }
+}
+
+// Works with both the external Kotlin plugin and AGP 9 built-in Kotlin.
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
     }
 }
