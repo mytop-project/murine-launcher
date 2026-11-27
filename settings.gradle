@@ -2,6 +2,15 @@
 // libraries it carries, and murine-app, which packages it as an app. When droidtop builds the launcher as its
 // shell-default submodule, droidtop's settings include these same modules and this file is not read.
 pluginManagement {
+    // Request the KGP module directly: the external-plugin compatibility path
+    // must not depend on availability of a separate Kotlin Android marker.
+    resolutionStrategy {
+        eachPlugin {
+            if (requested.id.id == 'org.jetbrains.kotlin.android') {
+                useModule("org.jetbrains.kotlin:kotlin-gradle-plugin:${requested.version}")
+            }
+        }
+    }
     repositories {
         google()
         mavenCentral()
