@@ -1,7 +1,8 @@
 plugins {
     id("com.android.library")
-    id("kotlin-android")
 }
+
+apply(from = File(rootProject.findProject(":shell-default")?.projectDir ?: rootProject.projectDir, "gradle/kotlin-android.gradle"))
 
 android {
     namespace = "com.android.launcher3.testing.shared"
@@ -17,12 +18,10 @@ android {
     sourceSets {
         named("main") {
             java.setSrcDirs(listOf("src"))
+            kotlin.setSrcDirs(listOf("src"))
             manifest.srcFile("AndroidManifest.xml")
             res.setSrcDirs(listOf("res"))
         }
-    }
-    kotlin {
-        jvmToolchain(21)//1.8（8）
     }
 }
 
@@ -51,4 +50,8 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     doFirst {
         libraries.from(files(frameworkStubs.resolve()))
     }
+}
+
+extensions.configure<org.jetbrains.kotlin.gradle.dsl.KotlinAndroidProjectExtension> {
+    jvmToolchain(21)
 }
